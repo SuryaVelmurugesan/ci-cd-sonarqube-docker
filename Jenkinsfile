@@ -34,22 +34,18 @@ pipeline {
       }
     }
 
-    stage('Docker Build & Push') {
-      steps {
+stage('Deploy (local)') {
+    steps {
         script {
-            docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS}") {
-                // Build the Docker image with the build number as tag
-                def img = docker.build("surya485/ci-cd-java-app:${env.BUILD_NUMBER}")
-                
-                // Push the build-number-tagged image
-                img.push()
-                
-                // Also push the 'latest' tag
-                img.push("latest")
-            }
+            // Remove existing container if exists
+            sh 'docker rm -f ci-cd-app || true'
+            
+            // Run the container with the correct image
+            sh 'docker run -d --name ci-cd-app -p 8080:8080 surya485/ci-cd-java-app:latest'
         }
-      }
     }
+}
+
 
     stage('Deploy (local)') {
       steps {
