@@ -2,9 +2,9 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE = 'your-dockerhub-username/ci-cd-java-app'
-    DOCKERHUB_CREDENTIALS = 'dockerhub'        // credentials ID in Jenkins
-    SONARQUBE = 'MySonarQube'                  // SonarQube name in Jenkins config
+    DOCKER_IMAGE = 'surya485/ci-cd-java-app'       // fixed your DockerHub username
+    DOCKERHUB_CREDENTIALS = 'dockerhub'           // credentials ID in Jenkins
+    SONARQUBE = 'MySonarQube'                     // SonarQube name in Jenkins config
   }
 
   stages {
@@ -21,8 +21,8 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         withSonarQubeEnv("${env.SONARQUBE}") {
-            sh 'mvn -B sonar:sonar -Dsonar.projectKey=ci-cd-java-app'
-            }
+          sh 'mvn -B sonar:sonar -Dsonar.projectKey=ci-cd-java-app'
+        }
       }
     }
 
@@ -34,15 +34,15 @@ pipeline {
       }
     }
 
-
-
-
-    stage('Deploy (local)') {
+    stage('Deploy Container Locally') {   // renamed
       steps {
-        sh """
-          docker rm -f ci-cd-app || true
-          docker run -d --name ci-cd-app -p 8080:8080 ${DOCKER_IMAGE}:latest
-        """
+        script {
+          // Remove existing container if exists
+          sh 'docker rm -f ci-cd-app || true'
+          
+          // Run the container with the correct image
+          sh 'docker run -d --name ci-cd-app -p 8080:8080 ${DOCKER_IMAGE}:latest'
+        }
       }
     }
   }
