@@ -55,7 +55,7 @@ pipeline {
                     // Remove existing container if exists
                     sh 'docker rm -f ci-cd-app || true'
                     // Run the container with the pushed image
-                    sh 'docker run -d --name ci-cd-app -p 8080:8080 ${DOCKER_IMAGE}:latest'
+                    sh 'docker run -d --name ci-cd-app -p 8081:8080 ${DOCKER_IMAGE}:latest'
                 }
             }
         }
