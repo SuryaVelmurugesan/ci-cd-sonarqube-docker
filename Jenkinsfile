@@ -34,17 +34,7 @@ pipeline {
       }
     }
 
-    stage('Deploy (local)') {
-      steps {
-        script {
-            // Remove existing container if exists
-            sh 'docker rm -f ci-cd-app || true'
-            
-            // Run the container with the correct image
-            sh 'docker run -d --name ci-cd-app -p 8080:8080 surya485/ci-cd-java-app:latest'
-        }
-      }
-    }
+
 
 
     stage('Deploy (local)') {
