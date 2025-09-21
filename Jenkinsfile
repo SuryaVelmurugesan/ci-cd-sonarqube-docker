@@ -63,7 +63,7 @@ pipeline {
                         docker rm -f ci-cd-app || true
 
                         # Run container from local build (latest tag will exist locally even if push failed)
-                        docker run -d --name ci-cd-app -p 8081:8080 ${DOCKER_IMAGE}:latest
+                        docker run -d --name ci-cd-app -p 8082:8080 surya485/ci-cd-java-app:latest
                     '''
                 }
             }
