@@ -37,11 +37,16 @@ pipeline {
     stage('Docker Build & Push') {
       steps {
         script {
-          docker.withRegistry('', "${DOCKERHUB_CREDENTIALS}") {
-            def img = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
-            img.push()
-            img.push("latest")
-          }
+            docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS}") {
+                // Build the Docker image with the build number as tag
+                def img = docker.build("surya485/ci-cd-java-app:${env.BUILD_NUMBER}")
+                
+                // Push the build-number-tagged image
+                img.push()
+                
+                // Also push the 'latest' tag
+                img.push("latest")
+            }
         }
       }
     }
