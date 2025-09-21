@@ -21,8 +21,8 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         withSonarQubeEnv("${env.SONARQUBE}") {
-          sh 'mvn -B sonar:sonar -Dsonar.projectKey=ci-cd-java-app -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN'
-        }
+            sh 'mvn -B sonar:sonar -Dsonar.projectKey=ci-cd-java-app'
+            }
       }
     }
 
